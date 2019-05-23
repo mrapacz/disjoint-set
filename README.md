@@ -1,4 +1,4 @@
-# disjoint_set
+# disjoint-set
 
 ![PyPI - License](https://img.shields.io/pypi/l/disjoint_set.svg)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/disjoint_set.svg)
