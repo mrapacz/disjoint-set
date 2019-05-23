@@ -1,30 +1,38 @@
 from collections import defaultdict
 
+from .utils import key_dependent_dict
+
 
 class DisjointSet:
     def __init__(self):
-        self.data = key_dependent_dict(lambda x: x)
+        self._data = key_dependent_dict(lambda x: x)
 
-    def find(self, i):
-        if i != self.data[i]:
-            self.data[i] = self.find(self.data[i])
-        return self.data[i]
+    def find(self, x):
+        """
+        Returns the representative member of the set to which x belongs, may be x itself.
+        :param x: element
+        :return: representative
+        """
+        if x != self._data[x]:
+            self._data[x] = self.find(self._data[x])
+        return self._data[x]
 
-    def union(self, i, j):
-        pi, pj = self.find(i), self.find(j)
-        if pi != pj:
-            self.data[pi] = pj
+    def union(self, x, y):
+        """
+        Attaches the roots of x and y trees together if they are not the same already.
+        :param x: first element
+        :param y: second element
+        :return: None
+        """
+        parent_x, parent_y = self.find(x), self.find(y)
+        if parent_x != parent_y:
+            self._data[parent_x] = parent_y
 
-    def connected(self, i, j):
-        return self.find(i) == self.find(j)
-
-
-class key_dependent_dict(defaultdict):
-    def __init__(self, f_of_x):
-        super().__init__(None)  # base class doesn't get a factory
-        self.f_of_x = f_of_x  # save f(x)
-
-    def __missing__(self, key):  # called when a default needed
-        ret = self.f_of_x(key)  # calculate default value
-        self[key] = ret  # and install it in the dict
-        return ret
+    def connected(self, x, y):
+        """
+        Returns True if x and y belong to the same tree (i.e. they have the same root), False otherwise.
+        :param x: first element
+        :param y: second element
+        :return: bool
+        """
+        return self.find(x) == self.find(y)
