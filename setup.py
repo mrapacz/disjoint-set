@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='disjoint_set',
-    version='0.0.3',
+    version='0.4.0',
     packages=setuptools.find_packages(),
     description='Disjoint set data structure implementation for Python',
     url='https://github.com/mrapacz/disjoint_set',
