@@ -19,6 +19,10 @@ class DisjointSet:
             values=', '.join([f'{key} <- {value}' for key, value in value_dict.items()]),
         )
 
+    def __iter__(self):
+        for key in self._data:
+            yield key, self.find(key)
+
     def find(self, x):
         """
         Returns the representative member of the set to which x belongs, may be x itself.

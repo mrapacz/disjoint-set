@@ -72,3 +72,11 @@ class TestDisjointSet(TestCase):
             str(self.dset),
             "DisjointSet(2 <- [1, 2])"
         )
+
+    def test_iter(self):
+        self.dset.union(1, 2)
+
+        self.assertEqual(
+            list(self.dset),
+            [(1, 2), (2, 2)]
+        )
