@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from main import DisjointSet
+from disjoint_set.main import DisjointSet
 
 
 class TestDisjointSet(TestCase):
