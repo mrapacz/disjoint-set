@@ -51,7 +51,7 @@ False
 True
 
 >>> list(self.dset)
-[(1, 2), (2, 2)]
+[(1, 2), (2, 2), (3, 3), ('a', 'a')]
 ```
 
 ## Contributing
