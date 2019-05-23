@@ -50,6 +50,8 @@ False
 >>> "a" in ds
 True
 
+>>> list(self.dset)
+[(1, 2), (2, 2)]
 ```
 
 ## Contributing
