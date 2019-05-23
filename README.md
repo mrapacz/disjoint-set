@@ -17,7 +17,7 @@ Python 3.7.2
 ## Installation
 
 ```
-pip install disjoint_set
+pip install disjoint-set
 ```
 
 You can verify he package was installed to your current environment by running:
