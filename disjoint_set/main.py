@@ -7,6 +7,18 @@ class DisjointSet:
     def __init__(self):
         self._data = key_dependent_dict(lambda x: x)
 
+    def __contains__(self, item):
+        return item in self._data
+
+    def __repr__(self):
+        value_dict = defaultdict(list)
+        for key, value in sorted(self._data.items()):
+            value_dict[value].append(key)
+        return "{classname}({values})".format(
+            classname=self.__class__.__name__,
+            values=', '.join([f'{key} <- {value}' for key, value in value_dict.items()]),
+        )
+
     def find(self, x):
         """
         Returns the representative member of the set to which x belongs, may be x itself.

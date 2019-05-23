@@ -53,3 +53,22 @@ class TestDisjointSet(TestCase):
             self.dset.find(1),
             3
         )
+
+    def test_contains_elements(self):
+        self.assertEqual(
+            1 in self.dset,
+            False,
+        )
+
+        self.dset.find(1)
+        self.assertEqual(
+            1 in self.dset,
+            True,
+        )
+
+    def test_repr(self):
+        self.dset.union(1, 2)
+        self.assertEqual(
+            str(self.dset),
+            "DisjointSet(2 <- [1, 2])"
+        )
