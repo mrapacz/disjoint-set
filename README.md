@@ -42,6 +42,14 @@ disjoint-set      0.0.2
 True
 >>> ds.connected(1,3)
 False
+
+>>> "a" in ds
+False
+>>> ds.find("a")
+'a'
+>>> "a" in ds
+True
+
 ```
 
 ## Contributing
