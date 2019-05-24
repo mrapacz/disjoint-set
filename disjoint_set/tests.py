@@ -80,3 +80,16 @@ class TestDisjointSet(TestCase):
             list(self.dset),
             [(1, 2), (2, 2)]
         )
+
+    def test_bool(self):
+        self.assertEqual(
+            bool(self.dset),
+            False,
+        )
+
+        self.dset.union(1, 2)
+
+        self.assertEqual(
+            bool(self.dset),
+            True,
+        )

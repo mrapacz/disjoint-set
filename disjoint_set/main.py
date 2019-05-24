@@ -10,6 +10,9 @@ class DisjointSet:
     def __contains__(self, item):
         return item in self._data
 
+    def __bool__(self):
+        return bool(self._data)
+
     def __repr__(self):
         value_dict = defaultdict(list)
         for key, value in sorted(self._data.items()):
