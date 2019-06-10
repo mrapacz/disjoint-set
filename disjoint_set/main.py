@@ -35,7 +35,7 @@ class DisjointSet:
 
     def itersets(self) -> Generator[set, None, None]:
         """
-        Yields sets of connected components
+        Yields sets of connected components.
         >>> ds = DisjointSet()
         >>> ds.union(1,2)
         >>> list(ds.itersets())
