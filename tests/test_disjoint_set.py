@@ -1,11 +1,11 @@
 from unittest import TestCase
 
-from disjoint_set.main import DisjointSet
+import disjoint_set
 
 
 class TestDisjointSet(TestCase):
     def setUp(self) -> None:
-        self.dset = DisjointSet()
+        self.dset = disjoint_set.DisjointSet()
 
     def test_initializes_value_for_absent_key(self):
         self.assertTrue(1 not in self.dset._data)
