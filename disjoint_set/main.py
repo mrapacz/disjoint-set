@@ -1,13 +1,16 @@
 from collections import defaultdict
+from typing import TypeVar, Generator
 
-from .utils import key_dependent_dict
+from disjoint_set.utils import ArgDefaultDict
+
+T = TypeVar('T')
 
 
 class DisjointSet:
     def __init__(self):
-        self._data = key_dependent_dict(lambda x: x)
+        self._data: ArgDefaultDict = ArgDefaultDict(lambda x: x)
 
-    def __contains__(self, item):
+    def __contains__(self, item: T):
         return item in self._data
 
     def __bool__(self):
@@ -26,17 +29,41 @@ class DisjointSet:
         for key in self._data:
             yield key, self.find(key)
 
-    def find(self, x):
+    def _refresh_labels(self) -> None:
+        for item in self._data:
+            self.find(item)
+
+    def itersets(self) -> Generator[set, None, None]:
         """
-        Returns the representative member of the set to which x belongs, may be x itself.
-        :param x: element
-        :return: representative
+        Yields sets of connected components
+        >>> ds = DisjointSet()
+        >>> ds.union(1,2)
+        >>> list(ds.itersets())
+        [{1, 2}]
+        """
+        self._refresh_labels()
+        element_classes: defaultdict = defaultdict(set)
+        for element, element_class in self._data.items():
+            element_classes[element_class].add(element)
+
+        for element_class in element_classes.values():
+            yield element_class
+
+    def find(self, x: T) -> T:
+        """
+        Returns the representative member of the set of connected components to which x belongs, may be x itself.
+        >>> ds = DisjointSet()
+        >>> ds.find(1)
+        1
+        >>> ds.union(1,2)
+        >>> ds.find(1)
+        2
         """
         if x != self._data[x]:
             self._data[x] = self.find(self._data[x])
         return self._data[x]
 
-    def union(self, x, y):
+    def union(self, x: T, y: T) -> None:
         """
         Attaches the roots of x and y trees together if they are not the same already.
         :param x: first element
@@ -47,11 +74,16 @@ class DisjointSet:
         if parent_x != parent_y:
             self._data[parent_x] = parent_y
 
-    def connected(self, x, y):
+    def connected(self, x: T, y: T) -> bool:
         """
-        Returns True if x and y belong to the same tree (i.e. they have the same root), False otherwise.
         :param x: first element
         :param y: second element
-        :return: bool
+        :return: True if x and y belong to the same tree (i.e. they have the same root), False otherwise.
+        >>> ds = DisjointSet()
+        >>> ds.connected(1,2)
+        False
+        >>> ds.union(1,2)
+        >>> ds.connected(1,2)
+        True
         """
         return self.find(x) == self.find(y)

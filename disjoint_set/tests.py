@@ -8,10 +8,12 @@ class TestDisjointSet(TestCase):
         self.dset = DisjointSet()
 
     def test_initializes_value_for_absent_key(self):
+        self.assertTrue(1 not in self.dset._data)
         self.assertEqual(
             self.dset.find(1),
-            1
+            1,
         )
+        self.assertTrue(1 in self.dset._data)
 
     def test_holds_and_compares_different_data_types(self):
         values = [
@@ -24,7 +26,20 @@ class TestDisjointSet(TestCase):
                 False,
             )
 
-    def test_unites_correctly(self):
+    def test_sets_the_same_class_for_united_elements(self):
+        self.assertNotEqual(
+            self.dset._data[1],
+            self.dset._data[2],
+        )
+
+        self.dset.union(1, 2)
+
+        self.assertEqual(
+            self.dset._data[1],
+            self.dset._data[2],
+        )
+
+    def test_unites_symmetrically(self):
         self.dset.union(1, 2)
         self.dset.union(3, 4)
         self.dset.union(1, 6)
@@ -40,7 +55,7 @@ class TestDisjointSet(TestCase):
             True,
         )
 
-    def test_finds_correctly(self):
+    def test_updates_class_assignment(self):
         self.dset.union(1, 2)
         self.dset.union(2, 3)
 
@@ -54,7 +69,7 @@ class TestDisjointSet(TestCase):
             3
         )
 
-    def test_contains_elements(self):
+    def test_contains_elements_returns_existing_keys(self):
         self.assertEqual(
             1 in self.dset,
             False,
@@ -92,4 +107,41 @@ class TestDisjointSet(TestCase):
         self.assertEqual(
             bool(self.dset),
             True,
+        )
+
+    def test_itersets_iterates_over_all_component_classes(self):
+        self.dset.union(1, 2)
+        self.dset.union(2, 3)
+        self.assertEqual(
+            list(self.dset.itersets()),
+            [{1, 2, 3}],
+        )
+        self.dset.union(4, 5)
+        self.assertEqual(
+            list(self.dset.itersets()),
+            [{1, 2, 3}, {4, 5}],
+        )
+
+    def refreshes_labels_if_forced(self):
+        self.dset.union(1, 2)
+        self.dset.union(2, 3)
+
+        self.assertEqual(
+            self.dset._data[1],
+            2,
+        )
+        self.assertEqual(
+            self.dset._data[2],
+            3,
+        )
+
+        self.dset._refresh_labels()
+
+        self.assertEqual(
+            self.dset._data[1],
+            2,
+        )
+        self.assertEqual(
+            self.dset._data[2],
+            3,
         )
