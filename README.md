@@ -50,8 +50,12 @@ False
 >>> "a" in ds
 True
 
->>> list(self.dset)
+>>> list(ds)
 [(1, 2), (2, 2), (3, 3), ('a', 'a')]
+
+>>> list(ds.itersets())
+[{1, 2}, {3}, {'a'}]
+
 ```
 
 ## Contributing
