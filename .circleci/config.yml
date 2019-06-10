@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           command: |
-            pip install -r requirements_dev.txt
+            pip install --user -r requirements_dev.txt
             python -m doctest README.md disjoint_set/main.py
             python -m unittest discover
             mypy -p disjoint_set --warn-redundant-casts --warn-unused-ignores --no-warn-no-return
