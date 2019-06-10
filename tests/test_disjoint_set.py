@@ -122,7 +122,7 @@ class TestDisjointSet(TestCase):
             [{1, 2, 3}, {4, 5}],
         )
 
-    def refreshes_labels_if_forced(self):
+    def test_refreshes_labels_if_forced(self):
         self.dset.union(1, 2)
         self.dset.union(2, 3)
 
@@ -139,7 +139,7 @@ class TestDisjointSet(TestCase):
 
         self.assertEqual(
             self.dset._data[1],
-            2,
+            3,
         )
         self.assertEqual(
             self.dset._data[2],
