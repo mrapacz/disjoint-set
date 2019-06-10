@@ -1,0 +1,27 @@
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+  s
+version: 2
+jobs:
+  build:
+    working_directory: ~/disjoint_set
+    docker:
+      - image: circleci/python:3.7.3
+    steps:
+      - checkout
+      - run:
+          command: |
+            pip install -r requirements_dev.txt
+  test:
+    steps:
+      - run:
+          command: |
+            python -m doctest README.md disjoint_set/main.py
+            python -m unittest discover
+            mypy -p disjoint_set --warn-redundant-casts --warn-unused-ignores --no-warn-no-return
