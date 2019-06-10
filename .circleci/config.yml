@@ -6,7 +6,7 @@ workflows:
       - test:
           requires:
             - build
-  s
+
 version: 2
 jobs:
   build:
