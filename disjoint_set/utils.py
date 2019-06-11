@@ -1,7 +1,8 @@
-from typing import TypeVar, Callable, DefaultDict, Generic
+from typing import TypeVar, Callable, DefaultDict
 
 KT = TypeVar('KT')
 VT = TypeVar('VT')
+T = TypeVar('T')
 
 
 class ArgDefaultDict(DefaultDict[KT, VT]):
@@ -15,5 +16,5 @@ class ArgDefaultDict(DefaultDict[KT, VT]):
         return ret
 
 
-def identity(x: KT) -> KT:
+def identity(x: T) -> T:
     return x
