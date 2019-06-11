@@ -14,7 +14,7 @@ jobs:
             python -m coverage run -m unittest
             python -m coverage report
             python -m coverage html
-            python -m coveralls
+            $HOME/.local/bin/coveralls
       - store_artifacts:
           path: htmlcov
       - store_test_results:
