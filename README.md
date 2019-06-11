@@ -1,8 +1,9 @@
 # disjoint-set
 
-![PyPI - License](https://img.shields.io/pypi/l/disjoint_set.svg)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/disjoint_set.svg)
 [![PyPI](https://img.shields.io/pypi/v/disjoint_set.svg)](https://pypi.org/project/disjoint-set/)
+![Coveralls](https://img.shields.io/coveralls/github/mrapacz/disjoint-set/master.svg)
+![PyPI - License](https://img.shields.io/pypi/l/disjoint_set.svg)
 
 [DisjointSet](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) (a.k.a. union–find data structure or merge–find set) implementation for Python.
 
