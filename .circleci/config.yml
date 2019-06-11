@@ -19,4 +19,4 @@ jobs:
       - store_artifacts:
           path: htmlcov
       - store_test_results:
-          path: test_results/
+          path: test_results
