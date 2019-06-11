@@ -1,23 +1,23 @@
 from collections import defaultdict
-from typing import TypeVar, Generator
+from typing import TypeVar, Generator, Set, DefaultDict, Tuple, List, Generic
 
-from disjoint_set.utils import ArgDefaultDict
+from disjoint_set.utils import ArgDefaultDict, identity
 
 T = TypeVar('T')
 
 
-class DisjointSet:
-    def __init__(self):
-        self._data: ArgDefaultDict = ArgDefaultDict(lambda x: x)
+class DisjointSet(Generic[T]):
+    def __init__(self) -> None:
+        self._data: ArgDefaultDict[T, T] = ArgDefaultDict(identity)
 
-    def __contains__(self, item: T):
+    def __contains__(self, item: T) -> bool:
         return item in self._data
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return bool(self._data)
 
-    def __repr__(self):
-        value_dict = defaultdict(list)
+    def __repr__(self) -> str:
+        value_dict: DefaultDict[T, List[T]] = defaultdict(list)
         for key, value in sorted(self._data.items()):
             value_dict[value].append(key)
         return "{classname}({values})".format(
@@ -25,15 +25,11 @@ class DisjointSet:
             values=', '.join([f'{key} <- {value}' for key, value in value_dict.items()]),
         )
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[Tuple[T, T], None, None]:
         for key in self._data:
             yield key, self.find(key)
 
-    def _refresh_labels(self) -> None:
-        for item in self._data:
-            self.find(item)
-
-    def itersets(self) -> Generator[set, None, None]:
+    def itersets(self) -> Generator[Set[T], None, None]:
         """
         Yields sets of connected components.
         >>> ds = DisjointSet()
@@ -41,10 +37,9 @@ class DisjointSet:
         >>> list(ds.itersets())
         [{1, 2}]
         """
-        self._refresh_labels()
-        element_classes: defaultdict = defaultdict(set)
-        for element, element_class in self._data.items():
-            element_classes[element_class].add(element)
+        element_classes: DefaultDict[T, Set[T]] = defaultdict(lambda: set())
+        for element in self._data:
+            element_classes[self.find(element)].add(element)
 
         for element_class in element_classes.values():
             yield element_class
