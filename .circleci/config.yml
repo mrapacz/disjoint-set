@@ -10,7 +10,7 @@ jobs:
           command: |
             pip install --user -r requirements_dev.txt
             python -m doctest README.md disjoint_set/main.py
-            python -m mypy -p disjoint_set --warn-redundant-casts --warn-unused-ignores --no-warn-no-return
+            python -m mypy -p disjoint_set --warn-redundant-casts --warn-unused-ignores --no-warn-no-return --strict
             $HOME/.local/bin/coverage run -m unittest
             $HOME/.local/bin/coverage report
             $HOME/.local/bin/coverage html  # open htmlcov/index.html in a browser
