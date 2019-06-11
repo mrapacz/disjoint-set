@@ -14,5 +14,5 @@ jobs:
             $HOME/.local/bin/coverage run -m unittest
             $HOME/.local/bin/coverage report
             $HOME/.local/bin/coverage html  # open htmlcov/index.html in a browser
-            - store_artifacts:
-                path: htmlcov
+      - store_artifacts:
+          path: htmlcov
