@@ -9,8 +9,9 @@ jobs:
       - run:
           command: |
             pip install --user -r requirements_dev.txt
+            mkdir -p test_results/mypy test_results/coverage
             python -m doctest README.md disjoint_set/main.py
-            python -m mypy -p disjoint_set --strict  --any-exprs-report .
+            python -m mypy -p disjoint_set --strict  --any-exprs-report test_results/mypy
             python -m coverage run -m unittest
             python -m coverage report
             python -m coverage html
@@ -18,4 +19,4 @@ jobs:
       - store_artifacts:
           path: htmlcov
       - store_test_results:
-          path: any-exprs.txt
+          path: test_results/
