@@ -1,12 +1,3 @@
-workflows:
-  version: 2
-  build-test:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build
-  s
 version: 2
 jobs:
   build:
@@ -17,11 +8,14 @@ jobs:
       - checkout
       - run:
           command: |
-            pip install -r requirements_dev.txt
-  test:
-    steps:
-      - run:
-          command: |
+            pip install --user -r requirements_dev.txt
+            mkdir -p test_results/mypy test_results/coverage
             python -m doctest README.md disjoint_set/main.py
-            python -m unittest discover
-            mypy -p disjoint_set --warn-redundant-casts --warn-unused-ignores --no-warn-no-return
+            python -m mypy -p disjoint_set --strict --any-exprs-report test_results/mypy --junit-xml test_results/mypy/junit_tests.xml
+            python -m coverage run -m unittest
+            python -m coverage report
+            $HOME/.local/bin/coveralls
+      - store_artifacts:
+          path: test_results
+      - store_test_results:
+          path: test_results
