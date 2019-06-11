@@ -11,7 +11,7 @@ jobs:
             pip install --user -r requirements_dev.txt
             mkdir -p test_results/mypy test_results/coverage
             python -m doctest README.md disjoint_set/main.py
-            python -m mypy -p disjoint_set --strict  --any-exprs-report test_results/mypy
+            python -m mypy -p disjoint_set --strict --any-exprs-report test_results/mypy --junit-xml test_results/mypy/junit_tests.xml
             python -m coverage run -m unittest
             python -m coverage report
             $HOME/.local/bin/coveralls
