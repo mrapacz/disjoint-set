@@ -48,7 +48,7 @@ class DisjointSet(Generic[T]):
         import warnings
         warnings.warn('might cause stack overflow; please use find() instead')
         if x != self._data[x]:
-            self._data[x] = self.find(self._data[x])
+            self._data[x] = self._legacy_find(self._data[x])
         return self._data[x]
 
     def find(self, x: T) -> T:
