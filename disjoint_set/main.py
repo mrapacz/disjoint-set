@@ -44,6 +44,13 @@ class DisjointSet(Generic[T]):
         for element_class in element_classes.values():
             yield element_class
 
+    def _legacy_find(self, x: T) -> T:
+        import warnings
+        warnings.warn('might cause stack overflow; please use find() instead')
+        if x != self._data[x]:
+            self._data[x] = self.find(self._data[x])
+        return self._data[x]
+
     def find(self, x: T) -> T:
         """
         Returns the representative member of the set of connected components to which x belongs, may be x itself.
@@ -54,9 +61,15 @@ class DisjointSet(Generic[T]):
         >>> ds.find(1)
         2
         """
-        if x != self._data[x]:
-            self._data[x] = self.find(self._data[x])
-        return self._data[x]
+        # EACH node along the path should be pointed to the ROOT, instead of its DIRECT PARENT.
+        # see unittest case for detail
+        path = []
+        while x != self._data[x]:  # loop till the ROOT
+            path.append(x)
+            x = self._data[x]
+        for e in path:  # pointing EACH NODE directly to ROOT
+            self._data[e] = x
+        return x
 
     def union(self, x: T, y: T) -> None:
         """

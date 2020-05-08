@@ -121,3 +121,22 @@ class TestDisjointSet(TestCase):
             list(self.dset.itersets()),
             [{1, 2, 3}, {4, 5}],
         )
+
+    def test_deep_recursion(self):
+
+        def try_find(ds):
+            students = [{"school": "Stanford", "score": s} for s in range(1025)]
+            for i, s1 in enumerate(students):
+                for j, s2 in enumerate(students):
+                    if i >= j: continue  # avoid duplicate connection
+                    if ds.connected(s1, s2): continue  # skip if already connected
+                    if s1['school'] == s2['school']:
+                        ds.union(s1, s2)  # this would link s1 --> s2
+
+        # using new find() should be OK
+        try_find(self.dset)
+
+        # using ._legacy_find() would cause stack overflow
+        self.dset.find = self.dset._legacy_find
+        with self.assertRaises(AssertionError):
+            try_find(self.dset)
