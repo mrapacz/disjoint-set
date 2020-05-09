@@ -123,9 +123,11 @@ class TestDisjointSet(TestCase):
         )
 
     def test_deep_recursion(self):
+        import sys
+        sys.setrecursionlimit(64)  # default limit for py3.7 is 3000
 
         def try_find(ds):
-            students = [("Stanford", s) for s in range(1025)]
+            students = [("Stanford", s) for s in range(65)]
             for i, s1 in enumerate(students):
                 for j, s2 in enumerate(students):
                     if i >= j: continue  # avoid duplicate connection
@@ -140,8 +142,6 @@ class TestDisjointSet(TestCase):
         try_find(ds1)
 
         # using ._legacy_find() would cause stack overflow
-        import sys
-        sys.setrecursionlimit(1024)
         ds2 = disjoint_set.DisjointSet()
         ds2.find = ds2._legacy_find
         with self.assertRaises(RecursionError):
