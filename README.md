@@ -24,7 +24,7 @@ pip install disjoint-set
 You can verify he package was installed to your current environment by running:
 ```bash
 $ pip list | grep disjoint-set
-disjoint-set      0.6.2
+disjoint-set      0.6.3
 ```
 
 ## Usage
