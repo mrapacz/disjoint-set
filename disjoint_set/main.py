@@ -1,12 +1,21 @@
 from collections import defaultdict
-from typing import TypeVar, Generator, Set, DefaultDict, Tuple, List, Generic
+from typing import DefaultDict
+from typing import Generator
+from typing import Generic
+from typing import List
+from typing import Set
+from typing import Tuple
+from typing import TypeVar
 
-from disjoint_set.utils import ArgDefaultDict, identity
+from disjoint_set.utils import ArgDefaultDict
+from disjoint_set.utils import identity
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class DisjointSet(Generic[T]):
+    """A disjoint set data structure."""
+
     def __init__(self) -> None:
         self._data: ArgDefaultDict[T, T] = ArgDefaultDict(identity)
 
@@ -21,8 +30,7 @@ class DisjointSet(Generic[T]):
         for key, value in sorted(self._data.items()):
             value_dict[value].append(key)
         return "{classname}({values})".format(
-            classname=self.__class__.__name__,
-            values=', '.join([f'{key} <- {value}' for key, value in value_dict.items()]),
+            classname=self.__class__.__name__, values=", ".join([f"{key} <- {value}" for key, value in value_dict.items()]),
         )
 
     def __iter__(self) -> Generator[Tuple[T, T], None, None]:
@@ -31,7 +39,8 @@ class DisjointSet(Generic[T]):
 
     def itersets(self) -> Generator[Set[T], None, None]:
         """
-        Yields sets of connected components.
+        Yield sets of connected components.
+
         >>> ds = DisjointSet()
         >>> ds.union(1,2)
         >>> list(ds.itersets())
@@ -41,12 +50,12 @@ class DisjointSet(Generic[T]):
         for element in self._data:
             element_classes[self.find(element)].add(element)
 
-        for element_class in element_classes.values():
-            yield element_class
+        yield from element_classes.values()
 
     def find(self, x: T) -> T:
         """
-        Returns the representative member of the set of connected components to which x belongs, may be x itself.
+        Return the representative member of the set of connected components to which x belongs, may be x itself.
+
         >>> ds = DisjointSet()
         >>> ds.find(1)
         1
@@ -60,7 +69,8 @@ class DisjointSet(Generic[T]):
 
     def union(self, x: T, y: T) -> None:
         """
-        Attaches the roots of x and y trees together if they are not the same already.
+        Attach the roots of x and y trees together if they are not the same already.
+
         :param x: first element
         :param y: second element
         :return: None
@@ -71,6 +81,8 @@ class DisjointSet(Generic[T]):
 
     def connected(self, x: T, y: T) -> bool:
         """
+        Return True if the two keys have the same root.
+
         :param x: first element
         :param y: second element
         :return: True if x and y belong to the same tree (i.e. they have the same root), False otherwise.

@@ -9,7 +9,7 @@ repos:
     rev: 5.0.2
     hooks:
       - id: pydocstyle
-        args: ['--convention', 'pep257', '--add-ignore', 'D100, D107, D104']
+        args: ['--convention', 'pep257', '--add-ignore', 'D100, D107, D104, D105']
         exclude: '^(tests/|setup.py|ntgen/__main__.py)'
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -54,6 +54,7 @@ repos:
     rev: v0.770
     hooks:
       - id: mypy
+        exclude: '^tests/$'
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.5.1
     hooks:
