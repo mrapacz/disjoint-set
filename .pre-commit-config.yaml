@@ -28,7 +28,7 @@ repos:
     rev: 19.10b0
     hooks:
       - id: black
-        language_version: python3.8
+        language_version: python3.7
         args: ['--line-length', '131']
 
   - repo: https://github.com/asottile/reorder_python_imports
