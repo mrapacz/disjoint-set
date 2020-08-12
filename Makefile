@@ -1,11 +1,11 @@
 .PHONY: dev
 dev:
 	pip install poetry
-	tox -e install-hooks
+	poetry run tox -e install-hooks
 
 .PHONY: test
 test:
-	tox -e unit
+	poetry run tox -e unit
 
 .PHONY: release
 release: clean
