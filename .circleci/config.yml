@@ -3,7 +3,6 @@ jobs:
   base-template: &base_template
     docker:
       - image: python:3.8
-    working_directory: ~/disjoint_set
     steps:
       - checkout
       - run:
