@@ -1,7 +1,7 @@
 .PHONY: dev
 dev:
 	pip install poetry
-	# poetry run tox -e install-hooks
+	poetry run tox -e install-hooks
 
 .PHONY: test
 test:

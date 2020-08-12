@@ -9,9 +9,8 @@ jobs:
           command: |
             echo "export PATH=$HOME/.local/bin:$PATH" >> $BASH_ENV
             source $BASH_ENV
-            pip install poetry
-            poetry install
-            poetry run pytest
+            make dev
+            make test
   build-py37:
     <<: *base_template
     docker:
