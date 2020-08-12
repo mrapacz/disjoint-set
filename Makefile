@@ -1,6 +1,7 @@
 .PHONY: dev
 dev:
-	pip install -r requirements-dev.txt
+	pip install poetry
+	poetry install
 
 .PHONY: release
 release: clean
