@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import TypeVar, Generator, Set, DefaultDict, Tuple, List, Generic
+from typing import DefaultDict, Generic, Iterator, List, Set, Tuple, TypeVar
 
 from disjoint_set.utils import ArgDefaultDict, identity
 
@@ -25,11 +25,11 @@ class DisjointSet(Generic[T]):
             values=', '.join([f'{key} <- {value}' for key, value in value_dict.items()]),
         )
 
-    def __iter__(self) -> Generator[Tuple[T, T], None, None]:
+    def __iter__(self) -> Iterator[Tuple[T, T]]:
         for key in self._data:
             yield key, self.find(key)
 
-    def itersets(self) -> Generator[Set[T], None, None]:
+    def itersets(self) -> Iterator[Set[T]]:
         """
         Yields sets of connected components.
         >>> ds = DisjointSet()
