@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  poetry: frameio/poetry@0.15.0
 jobs:
   base-template: &base_template
     docker:
