@@ -1,7 +1,7 @@
 from collections import defaultdict
 from typing import DefaultDict
-from typing import Generator
 from typing import Generic
+from typing import Iterator
 from typing import List
 from typing import Set
 from typing import Tuple
@@ -33,11 +33,11 @@ class DisjointSet(Generic[T]):
             classname=self.__class__.__name__, values=", ".join([f"{key} <- {value}" for key, value in value_dict.items()]),
         )
 
-    def __iter__(self) -> Generator[Tuple[T, T], None, None]:
+    def __iter__(self) -> Iterator[Tuple[T, T]]:
         for key in self._data:
             yield key, self.find(key)
 
-    def itersets(self) -> Generator[Set[T], None, None]:
+    def itersets(self) -> Iterator[Set[T]]:
         """
         Yield sets of connected components.
 
