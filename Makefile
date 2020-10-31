@@ -1,5 +1,6 @@
 .PHONY: dev
 dev:
+	poetry install --no-root
 	poetry run tox -e install-hooks
 
 .PHONY: test
