@@ -8,9 +8,10 @@ jobs:
       - checkout
       - run:
           command: |
-            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
             echo "export PATH=$HOME/.local/bin:$PATH" >> $BASH_ENV
             source $BASH_ENV
+            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+            source "${HOME}/.poetry/env/"
             poetry --version
             make dev
             make test
