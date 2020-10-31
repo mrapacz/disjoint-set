@@ -1,7 +1,5 @@
 version: 2.1
 
-orbs:
-  poetry: frameio/poetry@0.15.0
 jobs:
   base-template: &base_template
     docker:
@@ -10,8 +8,10 @@ jobs:
       - checkout
       - run:
           command: |
+            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
             echo "export PATH=$HOME/.local/bin:$PATH" >> $BASH_ENV
             source $BASH_ENV
+            poetry --version
             make dev
             make test
   build-py37:
