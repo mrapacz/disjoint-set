@@ -10,8 +10,6 @@ jobs:
           command: |
             echo "export PATH=$HOME/.local/bin:$PATH" >> $BASH_ENV
             source $BASH_ENV
-            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-            source "${HOME}/.profile"
             pip install tox
             make dev
             make test
