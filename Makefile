@@ -1,11 +1,10 @@
 .PHONY: dev
 dev:
-	poetry install --no-root
-	poetry run tox -e install-hooks
+	tox -e install-hooks
 
 .PHONY: test
 test:
-	poetry run tox -e unit
+	tox -e unit
 
 .PHONY: release
 release: clean

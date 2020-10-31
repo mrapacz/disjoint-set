@@ -12,7 +12,7 @@ jobs:
             source $BASH_ENV
             curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
             source "${HOME}/.profile"
-            poetry --version
+            pip install tox
             make dev
             make test
   build-py37:
