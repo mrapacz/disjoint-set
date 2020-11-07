@@ -7,8 +7,7 @@ from typing import Set
 from typing import Tuple
 from typing import TypeVar
 
-from disjoint_set.utils import ArgDefaultDict
-from disjoint_set.utils import identity
+from disjoint_set.utils import IdentityDict
 
 T = TypeVar("T")
 
@@ -16,8 +15,8 @@ T = TypeVar("T")
 class DisjointSet(Generic[T]):
     """A disjoint set data structure."""
 
-    def __init__(self) -> None:
-        self._data: ArgDefaultDict[T, T] = ArgDefaultDict(identity)
+    def __init__(self, *args, **kwargs) -> None:
+        self._data: IdentityDict[T] = IdentityDict(*args, **kwargs)
 
     def __contains__(self, item: T) -> bool:
         return item in self._data
@@ -25,13 +24,14 @@ class DisjointSet(Generic[T]):
     def __bool__(self) -> bool:
         return bool(self._data)
 
+    def __eq__(self, other):
+        return isinstance(other, DisjointSet) and self._data == other._data
+
     def __repr__(self) -> str:
         value_dict: DefaultDict[T, List[T]] = defaultdict(list)
-        for key, value in sorted(self._data.items()):
+        for key, value in self._data.items():
             value_dict[value].append(key)
-        return "{classname}({values})".format(
-            classname=self.__class__.__name__, values=", ".join([f"{key} <- {value}" for key, value in value_dict.items()]),
-        )
+        return f"{self.__class__.__name__}({dict(self)!r})"
 
     def __iter__(self) -> Iterator[Tuple[T, T]]:
         for key in self._data:
@@ -81,11 +81,8 @@ class DisjointSet(Generic[T]):
 
     def connected(self, x: T, y: T) -> bool:
         """
-        Return True if the two keys have the same root.
+        Return True if x and y belong to the same set (i.e. they have the canonical element).
 
-        :param x: first element
-        :param y: second element
-        :return: True if x and y belong to the same tree (i.e. they have the same root), False otherwise.
         >>> ds = DisjointSet()
         >>> ds.connected(1,2)
         False
