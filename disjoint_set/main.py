@@ -1,4 +1,5 @@
 from collections import defaultdict
+from typing import Any
 from typing import DefaultDict
 from typing import Generic
 from typing import Iterator
@@ -24,8 +25,18 @@ class DisjointSet(Generic[T]):
     def __bool__(self) -> bool:
         return bool(self._data)
 
-    def __eq__(self, other):
-        return isinstance(other, DisjointSet) and self._data == other._data
+    def __eq__(self, other: Any) -> bool:
+        """
+        Return True if both DistjoinSet structures are equivalent.
+
+        This may mean that their canonical elements are different, but the sets they form are the same.
+        >>> DisjointSet({1: 1, 2: 1}) == DisjointSet({1: 2, 2: 2})
+        True
+        """
+        if not isinstance(other, DisjointSet):
+            return False
+
+        return {tuple(x) for x in self.itersets()} == {tuple(x) for x in other.itersets()}
 
     def __repr__(self) -> str:
         value_dict: DefaultDict[T, List[T]] = defaultdict(list)
@@ -73,7 +84,6 @@ class DisjointSet(Generic[T]):
 
         :param x: first element
         :param y: second element
-        :return: None
         """
         parent_x, parent_y = self.find(x), self.find(y)
         if parent_x != parent_y:
