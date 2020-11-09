@@ -15,6 +15,21 @@ from disjoint_set.utils import IdentityDict
 T = TypeVar("T")
 
 
+class InvalidInitialMappingError(RuntimeError):
+    """Runtime error raised when invalid initial mapping causes the find() methods to change during iteration."""
+
+    def __init__(
+        self,
+        msg=(
+            "The mapping passed during ther DisjointSet initialization must have been wrong. "
+            "Check that all keys are mapping to other keys and not some external values."
+        ),
+        *args,
+        **kwargs,
+    ):
+        super().__init__(msg, *args, **kwargs)
+
+
 class DisjointSet(Generic[T]):
     """A disjoint set data structure."""
 
@@ -60,8 +75,11 @@ class DisjointSet(Generic[T]):
 
     def __iter__(self) -> Iterator[Tuple[T, T]]:
         """Iterate over items and their canonical elements."""
-        for key in self._data:
-            yield key, self.find(key)
+        try:
+            for key in self._data.keys():
+                yield key, self.find(key)
+        except RuntimeError as e:
+            raise InvalidInitialMappingError() from e
 
     def itersets(self, with_canonical_elements: bool = False) -> Iterator[Union[Set[T], Tuple[T, Set[T]]]]:
         """

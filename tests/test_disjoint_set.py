@@ -6,6 +6,7 @@ from typing import Tuple
 import pytest
 
 from disjoint_set import DisjointSet
+from disjoint_set import InvalidInitialMappingError
 
 
 @pytest.fixture
@@ -13,13 +14,15 @@ def dset() -> DisjointSet:
     return DisjointSet()
 
 
-@pytest.fixture(params=[{1: 1}, {1: 1, 2: 1, 3: 3}])
+@pytest.fixture(params=[{1: 1}, {1: 1, 2: 1, 3: 3}, {1: 2, 2: 3, 3: 4, 4: 4}])
 def sample_dset(request):
     return DisjointSet(request.param)
 
 
 def test_repr_evals_to_the_same_structure(sample_dset: DisjointSet[int]):
-    assert eval(repr(sample_dset)) == sample_dset
+    rept_str = repr(sample_dset)
+
+    assert eval(rept_str) == sample_dset
 
 
 def test_repr_is_expected_string():
@@ -68,3 +71,9 @@ def test_all_elements_within_sets_are_connected(element_sets: Tuple[Set[int], ..
         for elem_a, elem_b in product(element_set, element_set):
             assert empty_dset.connected(elem_a, elem_b)
             assert empty_dset.connected(elem_b, elem_a)
+
+
+def test_raises_on_invalid_init_params():
+    dset = DisjointSet({1: 2, 2: 3})
+    with pytest.raises(InvalidInitialMappingError):
+        list(dset)
