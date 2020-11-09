@@ -17,4 +17,4 @@ release: clean
 
 .PHONY: clean
 clean:
-	rm -rf build dist .coverage .mypy_cache .pytest_cache __pycache__ ntgen.egg-info .tox acceptance/*actual.txt
+	rm -rf build dist .coverage .mypy_cache .pytest_cache __pycache__ .tox
