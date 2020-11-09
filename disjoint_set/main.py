@@ -96,9 +96,10 @@ class DisjointSet(Generic[T]):
         >>> ds.find(1)
         2
         """
-        if x != self._data[x]:
-            self._data[x] = self.find(self._data[x])
-        return self._data[x]
+        while x != self._data[x]:
+            self._data[x] = self._data[self._data[x]]
+            x = self._data[x]
+        return x
 
     def union(self, x: T, y: T) -> None:
         """
