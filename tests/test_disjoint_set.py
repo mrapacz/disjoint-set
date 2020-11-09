@@ -67,3 +67,4 @@ def test_all_elements_within_sets_are_connected(element_sets: Tuple[Set[int], ..
     for element_set in element_sets:
         for elem_a, elem_b in product(element_set, element_set):
             assert empty_dset.connected(elem_a, elem_b)
+            assert empty_dset.connected(elem_b, elem_a)
