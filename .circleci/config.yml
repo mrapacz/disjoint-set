@@ -1,21 +1,27 @@
-version: 2
+version: 2.1
+
 jobs:
-  build:
-    working_directory: ~/disjoint_set
+  base-template: &base_template
     docker:
-      - image: circleci/python:3.7.3
+      - image: python:3.8
     steps:
       - checkout
       - run:
           command: |
-            pip install --user -r requirements_dev.txt
-            mkdir -p test_results/mypy test_results/coverage
-            python -m doctest README.md disjoint_set/main.py
-            python -m mypy -p disjoint_set --strict --any-exprs-report test_results/mypy --junit-xml test_results/mypy/junit_tests.xml
-            python -m coverage run -m unittest
-            python -m coverage report
-            $HOME/.local/bin/coveralls
-      - store_artifacts:
-          path: test_results
-      - store_test_results:
-          path: test_results
+            echo "export PATH=$HOME/.local/bin:$PATH" >> $BASH_ENV
+            source $BASH_ENV
+            pip install tox
+            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+            source "${HOME}/.profile"
+            make test
+  build-py37:
+    <<: *base_template
+    docker:
+      - image: python:3.7
+  build-py38: *base_template
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build-py37
+      - build-py38

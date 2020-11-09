@@ -16,15 +16,16 @@ Python 3.7.2
 ```
 
 ## Installation
-
 ```
 pip install disjoint-set
 ```
 
-You can verify he package was installed to your current environment by running:
-```bash
-$ pip list | grep disjoint-set
-disjoint-set      0.6.3
+You can verify you're running the latest package version by running:
+```python
+>>> import disjoint_set
+>>> disjoint_set.__version__
+'0.7.0'
+
 ```
 
 ## Usage
