@@ -14,6 +14,10 @@ jobs:
             curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
             source "${HOME}/.profile"
             make test
+  build-py36:
+    <<: *base_template
+    docker:
+      - image: python:3.6
   build-py37:
     <<: *base_template
     docker:
@@ -23,5 +27,6 @@ workflows:
   version: 2
   build:
     jobs:
+      - build-py36
       - build-py37
       - build-py38
