@@ -3,6 +3,7 @@ name = "disjoint_set"
 version = "0.7.1"
 description = "Disjoint Set data structure implementation for Python"
 authors = ["Maciej Rapacz <mmrapacz@protonmail.ch>"]
+include = ["LICENSE"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
