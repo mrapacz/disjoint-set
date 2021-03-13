@@ -24,7 +24,7 @@ You can verify you're running the latest package version by running:
 ```python
 >>> import disjoint_set
 >>> disjoint_set.__version__
-'0.7.1'
+'0.7.2'
 
 ```
 
