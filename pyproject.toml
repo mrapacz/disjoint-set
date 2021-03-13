@@ -4,6 +4,8 @@ version = "0.7.2"
 description = "Disjoint Set data structure implementation for Python"
 authors = ["Maciej Rapacz <mmrapacz@protonmail.ch>"]
 include = ["LICENSE"]
+readme = "README.md"
+repository = "https://github.com/mrapacz/disjoint-set/"
 
 [tool.poetry.dependencies]
 python = "^3.7"
