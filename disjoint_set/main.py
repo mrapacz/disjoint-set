@@ -40,7 +40,7 @@ class DisjointSet(Generic[T]):
     def __bool__(self) -> bool:
         return bool(self._data)
 
-    def __get__(self, element: T) -> T:
+    def __getitem__(self, element: T) -> T:
         return self.find(element)
 
     def __eq__(self, other: Any) -> bool:
@@ -68,7 +68,8 @@ class DisjointSet(Generic[T]):
 
     def __str__(self) -> str:
         return "{classname}({values})".format(
-            classname=self.__class__.__name__, values=", ".join(str(dset) for dset in self.itersets()),
+            classname=self.__class__.__name__,
+            values=", ".join(str(dset) for dset in self.itersets()),
         )
 
     def __iter__(self) -> Iterator[Tuple[T, T]]:
