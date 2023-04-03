@@ -72,6 +72,13 @@ class DisjointSet(Generic[T]):
             values=", ".join(str(dset) for dset in self.itersets()),
         )
 
+    def __len__(self) -> int:
+        i = 0
+        for key in self._data:
+            if key == self._data[key]:
+                i += 1
+        return i
+    
     def __iter__(self) -> Iterator[Tuple[T, T]]:
         """Iterate over items and their canonical elements."""
         try:
