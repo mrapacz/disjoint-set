@@ -9,10 +9,10 @@
 
 ## Prerequisites
 
-The only requirement is having Python 3 installed, you can verify this by running:
+The only requirement is having Python 3.8+ installed, you can verify this by running:
 ```bash
 $ python --version
-Python 3.7.2
+Python 3.8.16
 ```
 
 ## Installation
@@ -24,7 +24,7 @@ You can verify you're running the latest package version by running:
 ```python
 >>> import disjoint_set
 >>> disjoint_set.__version__
-'0.7.3'
+'0.7.4'
 
 ```
 

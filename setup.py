@@ -9,6 +9,7 @@ setuptools.setup(
     package_data={"disjoint_set": ["py.typed"]},
     description="Disjoint set data structure implementation for Python",
     url="https://github.com/mrapacz/disjoint_set",
+    license_files=("LICENSE",),
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     maintainer="Maciej Rapacz",
