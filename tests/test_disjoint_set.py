@@ -77,3 +77,15 @@ def test_raises_on_invalid_init_params():
     dset = DisjointSet({1: 2, 2: 3})
     with pytest.raises(InvalidInitialMappingError):
         list(dset)
+
+
+@pytest.mark.parametrize(
+    argnames=("iterable", "expected_value"),
+    argvalues=(
+        pytest.param([], DisjointSet({}), id="empty list"),
+        pytest.param(range(3), DisjointSet({2: 2, 1: 1, 0: 0}), id="range(3)"),
+        pytest.param("abc", DisjointSet({"a": "a", "b": "b", "c": "c"}), id="string"),
+    ),
+)
+def test_from_iterable(iterable, expected_value):
+    assert DisjointSet.from_iterable(iterable=iterable) == expected_value

@@ -1,12 +1,12 @@
+from __future__ import annotations
+
 from collections import defaultdict
 from typing import Any
 from typing import DefaultDict
 from typing import Generic
+from typing import Iterable
 from typing import Iterator
-from typing import Set
-from typing import Tuple
 from typing import TypeVar
-from typing import Union
 
 from disjoint_set.utils import IdentityDict
 
@@ -32,12 +32,34 @@ class DisjointSet(Generic[T]):
     """A disjoint set data structure."""
 
     def __init__(self, *args, **kwargs) -> None:
+        """
+        Disjoint set data structure.
+
+        The data structure can be initialized as an empty disjoint set:
+        >>> DisjointSet()
+        DisjointSet({})
+
+        But it can also be instantiated from an existing mapping such as:
+        >>> DisjointSet({1: 2, 2: 2})
+        DisjointSet({1: 2, 2: 2})
+        """
         self._data: IdentityDict[T] = IdentityDict(*args, **kwargs)
 
+    @classmethod
+    def from_iterable(cls, iterable: Iterable[T]) -> DisjointSet[T]:
+        """Instantiate a DistjointSet instance by transforming each element from an interable to a canonical element."""
+        return cls({x: x for x in iterable})
+
+    def __len__(self) -> int:
+        """Return the number of elements in the disjoint set."""
+        return len(self._data)
+
     def __contains__(self, item: T) -> bool:
+        """Return True if `item` is an element of the disjoint set (not necessarily a canonical one)."""
         return item in self._data
 
     def __bool__(self) -> bool:
+        """Return True if disjoint set contains at least one element."""
         return bool(self._data)
 
     def __getitem__(self, element: T) -> T:
@@ -72,7 +94,7 @@ class DisjointSet(Generic[T]):
             values=", ".join(str(dset) for dset in self.itersets()),
         )
 
-    def __iter__(self) -> Iterator[Tuple[T, T]]:
+    def __iter__(self) -> Iterator[tuple[T, T]]:
         """Iterate over items and their canonical elements."""
         try:
             for key in self._data.keys():
@@ -80,7 +102,7 @@ class DisjointSet(Generic[T]):
         except RuntimeError as e:
             raise InvalidInitialMappingError() from e
 
-    def itersets(self, with_canonical_elements: bool = False) -> Iterator[Union[Set[T], Tuple[T, Set[T]]]]:
+    def itersets(self, with_canonical_elements: bool = False) -> Iterator[set[T] | tuple[T, set[T]]]:
         """
         Yield sets of connected components.
 
@@ -92,7 +114,7 @@ class DisjointSet(Generic[T]):
         >>> list(ds.itersets(with_canonical_elements=True))
         [(2, {1, 2})]
         """
-        element_classes: DefaultDict[T, Set[T]] = defaultdict(set)
+        element_classes: DefaultDict[T, set[T]] = defaultdict(set)
         for element in self._data:
             element_classes[self.find(element)].add(element)
 

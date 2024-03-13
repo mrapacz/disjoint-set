@@ -9,54 +9,98 @@
 
 ## Prerequisites
 
-The only requirement is having Python 3.8+ installed, you can verify this by running:
+The only requirement is using **Python 3.8+**. You can verify this by running:
+
 ```bash
 $ python --version
-Python 3.8.16
+Python 3.8.18
 ```
 
 ## Installation
+
 ```
 pip install disjoint-set
 ```
 
 You can verify you're running the latest package version by running:
+
 ```python
 >>> import disjoint_set
 >>> disjoint_set.__version__
-'0.7.4'
+'0.8.0'
 
 ```
 
 ## Usage
 
+### Import & instantiate
+
 ```python
 >>> from disjoint_set import DisjointSet
+>>> DisjointSet()
+DisjointSet({})
+
+>>> DisjointSet({1: 1})
+DisjointSet({1: 1})
+
+>>> DisjointSet.from_iterable([1,2,3])
+DisjointSet({1: 1, 2: 2, 3: 3})
+
+```
+
+### Perform find & union operations
+
+```python
 >>> ds = DisjointSet()
 >>> ds.find(1)
 1
+
 >>> ds.union(1,2)
 >>> ds.find(1)
 2
+
 >>> ds.find(2)
 2
+
+```
+
+### Check if values belong to the same set
+
+```python
+>>> ds = DisjointSet({1: 2, 2: 2, 3: 3})
 >>> ds.connected(1,2)
 True
+
 >>> ds.connected(1,3)
 False
 
+```
+
+### Check if values are present within the data structure
+
+```python
+>>> ds = DisjointSet()
 >>> "a" in ds
 False
+
 >>> ds.find("a")
 'a'
+
 >>> "a" in ds
 True
 
->>> list(ds)
-[(1, 2), (2, 2), (3, 3), ('a', 'a')]
+```
 
+### List elements and sets within the disjoint set
+
+```python
+>>> ds = DisjointSet({1: 2, 2: 2, 3: 3})
+>>> list(ds)
+[(1, 2), (2, 2), (3, 3)]
+
+>>> ds = DisjointSet({1: 2, 2: 2, 3: 3})
 >>> list(ds.itersets())
-[{1, 2}, {3}, {'a'}]
+[{1, 2}, {3}]
 
 ```
 
@@ -66,8 +110,7 @@ Feel free to open any issues on github.
 
 ## Authors
 
-* [Maciej Rapacz](https://github.com/mrapacz/)
-
+- [Maciej Rapacz](https://github.com/mrapacz/)
 
 ## License
 
