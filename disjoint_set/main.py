@@ -1,8 +1,14 @@
 from __future__ import annotations
 
+import sys
 from collections import defaultdict
 from collections.abc import Iterable, Iterator
-from typing import Any, Generic, TypeVar, override
+from typing import Any, Generic, TypeVar
+
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from typing_extensions import override
 
 from disjoint_set.utils import IdentityDict
 
