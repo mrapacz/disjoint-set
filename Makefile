@@ -1,10 +1,15 @@
-.PHONY: dev
+PHONY: dev
 dev:
-	tox -e install-hooks
+	uv run pre-commit install --install-hooks
+
+.PHONY: lint
+lint:
+	uv run pre-commit run --all-files
 
 .PHONY: test
 test:
-	tox -e unit
+	uv run pytest --doctest-modules --doctest-glob="*.md"
+	uv run mypy disjoint_set
 
 .PHONY: release
 release: clean
@@ -17,4 +22,4 @@ release: clean
 
 .PHONY: clean
 clean:
-	rm -rf build dist .coverage .mypy_cache .pytest_cache __pycache__ .tox
+	rm -rf build dist .coverage .mypy_cache .pytest_cache __pycache__ .tox .venv
