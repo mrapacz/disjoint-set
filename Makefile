@@ -1,15 +1,15 @@
 PHONY: dev
 dev:
-	uv run pre-commit install --install-hooks
+	uvx prek --install-hooks
 
 .PHONY: lint
 lint:
-	uv run pre-commit run --all-files
+	uvx prek
 
 .PHONY: test
 test:
 	uv run pytest --doctest-modules --doctest-glob="*.md"
-	uv run mypy disjoint_set
+	uv run pyright
 
 .PHONY: release
 release: clean
