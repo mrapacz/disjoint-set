@@ -1,5 +1,4 @@
-from .main import DisjointSet
-from .main import InvalidInitialMappingError
+from .main import DisjointSet, InvalidInitialMappingError
 
 name = "disjoint_set"
 __all__ = ["DisjointSet", "InvalidInitialMappingError"]

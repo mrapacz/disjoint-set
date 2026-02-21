@@ -1,12 +1,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Any
-from typing import DefaultDict
-from typing import Generic
-from typing import Iterable
-from typing import Iterator
-from typing import TypeVar
+from typing import Any, DefaultDict, Generic, Iterable, Iterator, TypeVar
 
 from disjoint_set.utils import IdentityDict
 
@@ -76,7 +71,9 @@ class DisjointSet(Generic[T]):
         if not isinstance(other, DisjointSet):
             return False
 
-        return {tuple(x) for x in self.itersets()} == {tuple(x) for x in other.itersets()}
+        return {tuple(x) for x in self.itersets()} == {
+            tuple(x) for x in other.itersets()
+        }
 
     def __repr__(self) -> str:
         """
@@ -102,7 +99,9 @@ class DisjointSet(Generic[T]):
         except RuntimeError as e:
             raise InvalidInitialMappingError() from e
 
-    def itersets(self, with_canonical_elements: bool = False) -> Iterator[set[T] | tuple[T, set[T]]]:
+    def itersets(
+        self, with_canonical_elements: bool = False
+    ) -> Iterator[set[T] | tuple[T, set[T]]]:
         """
         Yield sets of connected components.
 

@@ -1,12 +1,9 @@
 from itertools import product
-from typing import Any
-from typing import Set
-from typing import Tuple
+from typing import Any, Set, Tuple
 
 import pytest
 
-from disjoint_set import DisjointSet
-from disjoint_set import InvalidInitialMappingError
+from disjoint_set import DisjointSet, InvalidInitialMappingError
 
 
 @pytest.fixture
@@ -60,7 +57,9 @@ def test_initializes_value_for_absent_key(empty_dset: DisjointSet, sample_elemen
         pytest.param(({1}, {2}, {3}, {4}, {5}), id="single-element sets"),
     ),
 )
-def test_all_elements_within_sets_are_connected(element_sets: Tuple[Set[int], ...], empty_dset: DisjointSet):
+def test_all_elements_within_sets_are_connected(
+    element_sets: Tuple[Set[int], ...], empty_dset: DisjointSet
+):
     for element_set in element_sets:
         set_gen = (x for x in element_set)
         first = next(set_gen)
