@@ -1,0 +1,56 @@
+name: Upload Python Package
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  release-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Installs the official uv GitHub Action
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Build release distributions
+        run: uv build
+
+      - name: Upload distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-dists
+          path: dist/
+
+  pypi-publish:
+    runs-on: ubuntu-latest
+    needs: release-build
+    permissions:
+      # IMPORTANT: this permission is mandatory for Trusted Publishing (OIDC)
+      id-token: write
+
+    environment:
+      name: pypi
+      # OPTIONAL: uncomment and update to include your PyPI project URL in the deployment status:
+      # url: https://pypi.org/p/YOURPROJECT
+
+    steps:
+      - name: Retrieve release distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: release-dists
+          path: dist/
+
+      # uv needs to be available in this job as well to run `uv publish`
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Publish release distributions to PyPI
+        run: uv publish

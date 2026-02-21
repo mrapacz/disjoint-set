@@ -1,21 +1,18 @@
 from itertools import product
 from typing import Any
-from typing import Set
-from typing import Tuple
 
 import pytest
 
-from disjoint_set import DisjointSet
-from disjoint_set import InvalidInitialMappingError
+from disjoint_set import DisjointSet, InvalidInitialMappingError
 
 
 @pytest.fixture
-def dset() -> DisjointSet:
+def dset() -> DisjointSet[Any]:
     return DisjointSet()
 
 
 @pytest.fixture(params=[{1: 1}, {1: 1, 2: 1, 3: 3}, {1: 2, 2: 3, 3: 4, 4: 4}])
-def sample_dset(request):
+def sample_dset(request: Any) -> DisjointSet[Any]:
     return DisjointSet(request.param)
 
 
@@ -30,7 +27,7 @@ def test_repr_is_expected_string():
 
 
 @pytest.fixture()
-def empty_dset() -> DisjointSet:
+def empty_dset() -> DisjointSet[Any]:
     return DisjointSet()
 
 
@@ -43,11 +40,13 @@ def empty_dset() -> DisjointSet:
         pytest.param(None, id="None"),
     ]
 )
-def sample_element(request):
+def sample_element(request: Any) -> Any:
     return request.param
 
 
-def test_initializes_value_for_absent_key(empty_dset: DisjointSet, sample_element: Any):
+def test_initializes_value_for_absent_key(
+    empty_dset: DisjointSet[Any], sample_element: Any
+):
     assert sample_element not in empty_dset
     assert empty_dset.find(sample_element) == sample_element
     assert sample_element in empty_dset
@@ -60,7 +59,9 @@ def test_initializes_value_for_absent_key(empty_dset: DisjointSet, sample_elemen
         pytest.param(({1}, {2}, {3}, {4}, {5}), id="single-element sets"),
     ),
 )
-def test_all_elements_within_sets_are_connected(element_sets: Tuple[Set[int], ...], empty_dset: DisjointSet):
+def test_all_elements_within_sets_are_connected(
+    element_sets: tuple[set[int], ...], empty_dset: DisjointSet[int]
+):
     for element_set in element_sets:
         set_gen = (x for x in element_set)
         first = next(set_gen)
@@ -73,8 +74,8 @@ def test_all_elements_within_sets_are_connected(element_sets: Tuple[Set[int], ..
             assert empty_dset.connected(elem_b, elem_a)
 
 
-def test_raises_on_invalid_init_params():
-    dset = DisjointSet({1: 2, 2: 3})
+def test_raises_on_invalid_init_params() -> None:
+    dset: DisjointSet[int] = DisjointSet({1: 2, 2: 3})
     with pytest.raises(InvalidInitialMappingError):
         list(dset)
 
@@ -87,5 +88,5 @@ def test_raises_on_invalid_init_params():
         pytest.param("abc", DisjointSet({"a": "a", "b": "b", "c": "c"}), id="string"),
     ),
 )
-def test_from_iterable(iterable, expected_value):
+def test_from_iterable(iterable: Any, expected_value: DisjointSet[Any]) -> None:
     assert DisjointSet.from_iterable(iterable=iterable) == expected_value

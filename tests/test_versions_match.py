@@ -6,7 +6,7 @@ import disjoint_set
 
 
 def parse_pyproject_for_version() -> str:
-    return toml.loads(Path("pyproject.toml").read_text())["tool"]["poetry"]["version"]
+    return toml.loads(Path("pyproject.toml").read_text())["project"]["version"]
 
 
 def test_versions_match():

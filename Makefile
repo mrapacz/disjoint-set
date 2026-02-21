@@ -1,20 +1,21 @@
-.PHONY: dev
+PHONY: dev
 dev:
-	tox -e install-hooks
+	uvx prek install
+
+.PHONY: lint
+lint:
+	uvx prek --all-files
 
 .PHONY: test
 test:
-	tox -e unit
+	uv run pytest --doctest-modules --doctest-glob="*.md"
+	uv run pyright
 
 .PHONY: release
 release: clean
-	python setup.py sdist bdist_wheel
-	echo "Checking dist:"
-	twine check dist/*
-	# "Are you sure you want to publish the ^ release? Press any key to continue."
-	read
-	twine upload dist/*
+	uv build
+	uv publish
 
 .PHONY: clean
 clean:
-	rm -rf build dist .coverage .mypy_cache .pytest_cache __pycache__ .tox
+	rm -rf build dist .coverage .mypy_cache .pytest_cache __pycache__ .tox .venv .git/hooks/pre-commit
