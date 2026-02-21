@@ -1,6 +1,6 @@
 PHONY: dev
 dev:
-	uvx prek --install-hooks
+	uvx prek install
 
 .PHONY: lint
 lint:
@@ -22,4 +22,4 @@ release: clean
 
 .PHONY: clean
 clean:
-	rm -rf build dist .coverage .mypy_cache .pytest_cache __pycache__ .tox .venv
+	rm -rf build dist .coverage .mypy_cache .pytest_cache __pycache__ .tox .venv .git/hooks/pre-commit
