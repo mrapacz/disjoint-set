@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Any, DefaultDict, Generic, Iterable, Iterator, TypeVar
+from collections.abc import Iterable, Iterator
+from typing import Any, Generic, TypeVar, override
 
 from disjoint_set.utils import IdentityDict
 
@@ -13,12 +14,12 @@ class InvalidInitialMappingError(RuntimeError):
 
     def __init__(
         self,
-        msg=(
+        msg: str = (
             "The mapping passed during ther DisjointSet initialization must have been wrong. "
             "Check that all keys are mapping to other keys and not some external values."
         ),
-        *args,
-        **kwargs,
+        *args: Any,
+        **kwargs: Any,
     ):
         super().__init__(msg, *args, **kwargs)
 
@@ -26,7 +27,7 @@ class InvalidInitialMappingError(RuntimeError):
 class DisjointSet(Generic[T]):
     """A disjoint set data structure."""
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         """
         Disjoint set data structure.
 
@@ -60,7 +61,8 @@ class DisjointSet(Generic[T]):
     def __getitem__(self, element: T) -> T:
         return self.find(element)
 
-    def __eq__(self, other: Any) -> bool:
+    @override
+    def __eq__(self, other: object) -> bool:
         """
         Return True if both DistjoinSet structures are equivalent.
 
@@ -75,6 +77,7 @@ class DisjointSet(Generic[T]):
             tuple(x) for x in other.itersets()
         }
 
+    @override
     def __repr__(self) -> str:
         """
         Print self in a reproducible way.
@@ -85,6 +88,7 @@ class DisjointSet(Generic[T]):
         sets = {key: val for key, val in self}
         return f"{self.__class__.__name__}({sets})"
 
+    @override
     def __str__(self) -> str:
         return "{classname}({values})".format(
             classname=self.__class__.__name__,
@@ -113,7 +117,7 @@ class DisjointSet(Generic[T]):
         >>> list(ds.itersets(with_canonical_elements=True))
         [(2, {1, 2})]
         """
-        element_classes: DefaultDict[T, set[T]] = defaultdict(set)
+        element_classes: defaultdict[T, set[T]] = defaultdict(set)
         for element in self._data:
             element_classes[self.find(element)].add(element)
 

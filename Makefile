@@ -4,7 +4,7 @@ dev:
 
 .PHONY: lint
 lint:
-	uvx prek
+	uvx prek --all-files
 
 .PHONY: test
 test:

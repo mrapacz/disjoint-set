@@ -14,7 +14,3 @@ repos:
           args: ["check", "--select", "I", "--fix"]
         - id: ruff-format
           types_or: [python, pyi]
-    - repo: https://github.com/DetachHead/basedpyright-prek-mirror
-      rev: 1.37.2
-      hooks:
-          - id: basedpyright
