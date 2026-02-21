@@ -13,12 +13,8 @@ test:
 
 .PHONY: release
 release: clean
-	python setup.py sdist bdist_wheel
-	echo "Checking dist:"
-	twine check dist/*
-	# "Are you sure you want to publish the ^ release? Press any key to continue."
-	read
-	twine upload dist/*
+	uv build
+	uv publish
 
 .PHONY: clean
 clean:
