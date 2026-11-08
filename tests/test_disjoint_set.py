@@ -1,4 +1,5 @@
-from itertools import product
+from collections.abc import Iterator
+from itertools import pairwise, product
 from typing import Any
 
 import pytest
@@ -90,3 +91,75 @@ def test_raises_on_invalid_init_params() -> None:
 )
 def test_from_iterable(iterable: Any, expected_value: DisjointSet[Any]) -> None:
     assert DisjointSet.from_iterable(iterable=iterable) == expected_value
+
+
+@pytest.mark.parametrize(
+    "elements",
+    [
+        pytest.param((1, 9), id="integers"),
+        pytest.param(("bob", "carol", "dave"), id="names"),
+    ],
+)
+def test_equality_across_opposing_union_histories(elements: tuple[Any, ...]) -> None:
+    left = DisjointSet()
+    left.find(elements[0])
+    for first, second in pairwise(elements):
+        left.union(first, second)
+
+    right = DisjointSet.from_iterable([elements[-1]])
+    reversed_elements = elements[::-1]
+    for first, second in pairwise(reversed_elements):
+        right.union(first, second)
+
+    expected_partition = frozenset([frozenset(elements)])
+    assert frozenset(map(frozenset, left.itersets())) == expected_partition
+    assert frozenset(map(frozenset, right.itersets())) == expected_partition
+    assert left == right
+    assert right == left
+
+
+def test_equality_ignores_component_iteration_order(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class IterationOrderedSet(set[int]):
+        def __init__(self, values: tuple[int, ...]) -> None:
+            super().__init__(values)
+            self._iteration_order = values
+
+        def __iter__(self) -> Iterator[int]:
+            return iter(self._iteration_order)
+
+    left = DisjointSet({1: 1, 2: 1, 3: 3})
+    right = DisjointSet({3: 3, 2: 2, 1: 2})
+    # Equal component sets may yield their members and components in either order.
+    left_blocks = [IterationOrderedSet((1, 2)), IterationOrderedSet((3,))]
+    right_blocks = [IterationOrderedSet((3,)), IterationOrderedSet((2, 1))]
+    assert left_blocks[0] == right_blocks[1]
+    assert tuple(left_blocks[0]) != tuple(right_blocks[1])
+    monkeypatch.setattr(left, "itersets", lambda: iter(left_blocks))
+    monkeypatch.setattr(right, "itersets", lambda: iter(right_blocks))
+
+    assert left == right
+    assert right == left
+
+
+@pytest.mark.parametrize(
+    ("left_mapping", "right_mapping", "expected"),
+    [
+        pytest.param({}, {}, True, id="empty"),
+        pytest.param({1: 1, 2: 1}, {1: 2, 2: 2}, True, id="different-roots"),
+        pytest.param({1: 1, 2: 2}, {1: 2, 2: 2}, False, id="different-partitions"),
+        pytest.param({1: 1}, {1: 1, 2: 2}, False, id="different-members"),
+    ],
+)
+def test_equality_compares_partitions(
+    left_mapping: dict[int, int], right_mapping: dict[int, int], expected: bool
+) -> None:
+    left = DisjointSet(left_mapping)
+    right = DisjointSet(right_mapping)
+    assert (left == right) is expected
+    assert (right == left) is expected
+
+
+def test_equality_with_other_type_is_false() -> None:
+    assert (DisjointSet({1: 1}) == {1}) is False
