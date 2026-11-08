@@ -79,8 +79,8 @@ class DisjointSet(Generic[T]):
         if not isinstance(other, DisjointSet):
             return False
 
-        return {tuple(x) for x in self.itersets()} == {
-            tuple(x) for x in other.itersets()
+        return {frozenset(x) for x in self.itersets()} == {
+            frozenset(x) for x in other.itersets()
         }
 
     @override
